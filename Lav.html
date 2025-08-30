@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday!</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: lavender;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      z-index: 5;
+    }
+
+    .text {
+      font-size: 24px;
+      font-weight: bold;
+      color: #6a0dad;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      font-size: 20px;
+      border: none;
+      border-radius: 12px;
+      background-color: #b57edc;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    .btn:hover {
+      transform: scale(1.1);
+    }
+
+    .message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 40px;
+      font-weight: bold;
+      color: #6a0dad;
+      display: none;
+      text-align: center;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+      max-width: 80%;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .show {
+      opacity: 1;
+    }
+
+    .heart {
+      position: absolute;
+      color: violet;
+      font-size: 50px;
+      animation: floatUp 5s linear forwards;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-300px) scale(1.8); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="text">Hai Ajeng syg</div>
+    <button class="btn" onclick="showLove(this)">Pencet</button>
+  </div>
+  
+  <div class="message" id="messageBox"></div>
+
+  <audio id="birthdaySong" src="happy-birthday.mp3"></audio>
+
+  <script>
+    const messages = [
+      "Selamat Ulang Tahun Ajeng 💜",
+      "Semoga kehidupan berjalan sesuai keinginan kamu 🌸",
+      "sehat selalu dan bahagia 🎂",
+      "pokoknya happy terus ya",
+      "Semoga lancar semua kegiatan kamu",
+      "sekian...",
+      "dari orang cakep dan kemce",
+      "dimas😎"
+    ];
+
+    let currentMessage = 0;
+
+    function showLove(button) {
+      const messageBox = document.getElementById('messageBox');
+      const music = document.getElementById('birthdaySong');
+      const text = document.querySelector('.text');
+
+      // Tampilkan pesan
+      messageBox.style.display = 'block';
+      messageBox.innerHTML = messages[currentMessage];
+      messageBox.classList.add('show');
+
+      // Sembunyikan tombol + teks
+      button.style.display = 'none';
+      text.style.display = 'none';
+
+      // Play music
+      music.play().catch(err => {
+        console.log("Autoplay dicegah, coba klik tombol lain atau cek file audio.");
+      });
+
+      // Buat hearts
+      for (let i = 0; i < 20; i++) {
+        let heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = '❤';
+        document.body.appendChild(heart);
+
+        heart.style.left = Math.random() * window.innerWidth + 'px';
+        heart.style.top = window.innerHeight + 'px';
+        heart.style.fontSize = (10 + Math.random() * 50) + 'px';
+
+        setTimeout(() => heart.remove(), 6000);
+      }
+
+      // Looping teks bergantian
+      setInterval(() => {
+        messageBox.classList.remove('show'); // hilangin dulu
+        setTimeout(() => {
+          currentMessage = (currentMessage + 1) % messages.length;
+          messageBox.innerHTML = messages[currentMessage];
+          messageBox.classList.add('show'); // fade in lagi
+        }, 700); // delay biar ada efek fade out
+      }, 2800); // tiap 4 detik ganti pesan
+    }
+  </script>
+</body>
+</html>
